@@ -1,13 +1,17 @@
-library(arules)
 library(rpart)
 library(rpart.plot)
+
+
+
+###
+#  Nicht sicher ob das hier überhaupt sinn macht bei unseren daten..
+###
 
 # to remove all objects 
 rm(list = ls()) 
 
 #pfad für unseren projektordner
-path = "C://Users//azunai//Desktop//Uni//DataMining//Projekt"
-setwd(path)
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 coffeeTable = read.delim("kaffee.asc",sep=" ")
 

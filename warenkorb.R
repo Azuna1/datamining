@@ -5,8 +5,7 @@ library(arules)
 rm(list = ls()) 
 
 #pfad für unseren projektordner
-path = "C://Users//azunai//Desktop//Uni//DataMining//Projekt"
-setwd(path)
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 coffeeTable = read.delim("kaffee.asc",sep=" ")
 
