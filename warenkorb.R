@@ -28,8 +28,11 @@ summary(coffeeTrans)
 itemFrequency(coffeeTrans)
 itemFrequencyPlot(coffeeTrans)
 
+
+
 #### daten auswerten
-## verteilung
+
+## verteilung 
 itemFrequency(coffeeTrans)
 itemFrequencyPlot(coffeeTrans)
 
@@ -59,3 +62,14 @@ inspect(sort(rulesTreu, by="confidence")[1:10])
 rulesUntreu = subset(rules, rhs %in% "treue=2")
 inspect(rulesUntreu)
 inspect(sort(rulesUntreu, by="confidence")[1:10])
+
+
+
+
+
+
+## falls fehler "Fehler in length(x) : Method length not implemented for class rules"
+# in konsole folgende befehle ausführen
+# unloadNamespace("arules")
+# update.packages("arules")
+# library(arules)

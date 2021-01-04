@@ -27,9 +27,9 @@ coffeeTable[[11]] <- as.factor(coffeeTable[[11]])
 coffeeTable[[12]] <- as.factor(coffeeTable[[12]])
 
 # numerische Daten standardisieren
-nummer.stand = (coffeeTable$nummer - mean(coffeeTable$nummer)) / sd(coffeeTable$nummer)
+
 dauer.stand = (coffeeTable$dauer - mean(coffeeTable$dauer)) / sd(coffeeTable$dauer)
-persn.stand = (coffeeTable$persn - mean(coffeeTable$persn)) / sd(coffeeTable$persn)
+
 
 coffeeTable.stand = data.frame(coffeeTable$treue,coffeeTable$menge,coffeeTable$preis, nummer.stand,coffeeTable$marke,
                                dauer.stand,coffeeTable$alter,coffeeTable$klasse,coffeeTable$einkm,persn.stand,coffeeTable$prbew,
