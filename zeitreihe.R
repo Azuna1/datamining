@@ -24,8 +24,9 @@ coffeeTable[[12]] <- as.factor(coffeeTable[[12]])
 # Verteilung der häufigkeit der kaffe-käufe
 hist(coffeeTable$dauer)
 
+# Achtung, dauert ca 20 minuten, ergebnis liegt als .png im ordner bei
 #pairs(coffeeTable[c("menge","preis","marke","dauer","klasse","einkm","prbew","bildg","treue")])
-pairs.panels(coffeeTable[c("menge","preis","marke","dauer","klasse","einkm","prbew","bildg","treue")])
+#pairs.panels(coffeeTable[c("menge","preis","marke","dauer","klasse","einkm","prbew","bildg","treue")])
 
 model = lm(treue ~ menge + preis + marke + klasse + einkm + prbew + bildg, data = coffeeTable)
 model
