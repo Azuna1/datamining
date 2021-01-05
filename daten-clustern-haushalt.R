@@ -6,6 +6,13 @@
 # Datensatz gruppieren, Haushalte verändern sich über die Zeit
 # 
 
+### Anmerkung
+# Der Datensatz enthalt garkeine 2752 Haushalte
+# Der Datensatz wurde "kontinuierlich" erstellt, 
+# jedoch nicht erkennbar in welcher folge, da nach haushalt sortiert ist
+# und kein erhebungs zeitpunkt bekannt
+# Sequenzanalyse per haushalt?!?!
+
 library(cluster)
 library(tidyverse)
 
