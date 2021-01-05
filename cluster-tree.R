@@ -31,8 +31,8 @@ coffeeTable[[12]] <- as.factor(coffeeTable[[12]])
 dauer.stand = (coffeeTable$dauer - mean(coffeeTable$dauer)) / sd(coffeeTable$dauer)
 
 
-coffeeTable.stand = data.frame(coffeeTable$treue,coffeeTable$menge,coffeeTable$preis, nummer.stand,coffeeTable$marke,
-                               dauer.stand,coffeeTable$alter,coffeeTable$klasse,coffeeTable$einkm,persn.stand,coffeeTable$prbew,
+coffeeTable.stand = data.frame(coffeeTable$treue,coffeeTable$menge,coffeeTable$preis,coffeeTable$nummer,coffeeTable$marke,
+                               dauer.stand,coffeeTable$alter,coffeeTable$klasse,coffeeTable$einkm,coffeeTable$persn,coffeeTable$prbew,
                                coffeeTable$bildg)
 
 # entscheidungsbaum (irgendwas stimmt hier gewaltig nicht....)
