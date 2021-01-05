@@ -2,13 +2,13 @@
 # Aufgabe: Analyse der Markentreue für Kaffee
 
 ## Notizen von Besprechung:
-Keine wissenschaftliche notation nötig 
-Keine Präsentation 
-Praxisbeispiel 
-evtl Feedback gespräch 
-Was ist markentreue 
-daten beschreiben 
-daten testen (warenkorbanalyse / Zeitreihenprognose / associationrules) 
+- Keine wissenschaftliche notation nötig 
+- Keine Präsentation 
+- Praxisbeispiel 
+- evtl Feedback gespräch 
+- Was ist markentreue 
+- daten beschreiben 
+- daten testen (warenkorbanalyse / Zeitreihenprognose / associationrules) 
 
 Dem Datensatz liegen die Kaffeekäufe von 2752 Haushalten zu Grunde,
 die kontinuierlich in der Zeit vom 1.1.1988 bis 31.12.1990 am Haushaltspanel teilnahmen.
