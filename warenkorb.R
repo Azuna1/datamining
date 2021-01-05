@@ -86,71 +86,34 @@ plot(rules.4)
 
 # minlen = 4 scheint zu komplex, wir nutzen minlen = 3
 
-## visualisierung wie sich der support verhält bezogen auf confidence = 0.1
-minSupport = seq(0.05, 0.9, 0.05)
-total = c()
-for(support in minSupport){
-  rules.test = apriori(coffeeTrans, parameter=list(support=support, confidence=0.1, minlen=3, target="rules"))
-  total = c(total,length(rules.test))
+myVisualSupport = function(df, conf=1, mlen=3){
+  minSupport = seq(0.05, 0.9, 0.05)
+  total = c()
+  for(support in minSupport){
+    rules.test = apriori(df, parameter=list(support=support, confidence=conf, minlen=mlen, target="rules"))
+    total = c(total,length(rules.test))
+  }
+  
+  rule2support = tibble(minSupport,total)
+  rule2support
+  
+  ggplot(rule2support,aes(x=minSupport,y=total)) + geom_line() + geom_point() + labs(title=sprintf("confidence=%.3f",conf), x="minimum support",y="# of rules") + theme_light()
 }
 
-rule2support = tibble(minSupport,total)
-rule2support
-
-ggplot(rule2support,aes(x=minSupport,y=total)) + geom_line() + geom_point() + labs(title="confidence=0.1", x="minimum support",y="# of rules") + theme_light()
+## visualisierung wie sich der support verhält bezogen auf confidence = 0.1
+myVisualSupport(coffeeTrans,conf=0.1)
 
 ## visualisierung wie sich der support verhält bezogen auf confidence = 0.2
-minSupport = seq(0.05, 0.9, 0.05)
-total = c()
-for(support in minSupport){
-  rules.test = apriori(coffeeTrans, parameter=list(support=support, confidence=0.2, minlen=3, target="rules"))
-  total = c(total,length(rules.test))
-}
-
-rule2support = tibble(minSupport,total)
-rule2support
-
-ggplot(rule2support,aes(x=minSupport,y=total)) + geom_line() + geom_point() + labs(title="confidence=0.2", x="minimum support",y="# of rules") + theme_light()
+myVisualSupport(coffeeTrans,conf=0.2)
 
 ## visualisierung wie sich der support verhält bezogen auf confidence = 0.3
-minSupport = seq(0.05, 0.9, 0.05)
-total = c()
-for(support in minSupport){
-  rules.test = apriori(coffeeTrans, parameter=list(support=support, confidence=0.3, minlen=3, target="rules"))
-  total = c(total,length(rules.test))
-}
-
-rule2support = tibble(minSupport,total)
-rule2support
-
-ggplot(rule2support,aes(x=minSupport,y=total)) + geom_line() + geom_point() + labs(title="confidence=0.3", x="minimum support",y="# of rules") + theme_light()
-
+myVisualSupport(coffeeTrans,conf=0.3)
 
 ## visualisierung wie sich der support verhält bezogen auf confidence = 0.4
-minSupport = seq(0.05, 0.9, 0.05)
-total = c()
-for(support in minSupport){
-  rules.test = apriori(coffeeTrans, parameter=list(support=support, confidence=0.4, minlen=3, target="rules"))
-  total = c(total,length(rules.test))
-}
-
-rule2support = tibble(minSupport,total)
-rule2support
-
-ggplot(rule2support,aes(x=minSupport,y=total)) + geom_line() + geom_point() + labs(title="confidence=0.4", x="minimum support",y="# of rules") + theme_light()
+myVisualSupport(coffeeTrans,conf=0.4)
 
 ## visualisierung wie sich der support verhält bezogen auf confidence = 0.5
-minSupport = seq(0.05, 0.9, 0.05)
-total = c()
-for(support in minSupport){
-  rules.test = apriori(coffeeTrans, parameter=list(support=support, confidence=0.5, minlen=3, target="rules"))
-  total = c(total,length(rules.test))
-}
-
-rule2support = tibble(minSupport,total)
-rule2support
-
-ggplot(rule2support,aes(x=minSupport,y=total)) + geom_line() + geom_point() + labs(title="confidence=0.5", x="minimum support",y="# of rules") + theme_light()
+myVisualSupport(coffeeTrans,conf=0.5)
 
 ####
 # Der support verhält sich jeweils gleich, bis 0.3 confidence werden ca gleich viele regeln gefunden
