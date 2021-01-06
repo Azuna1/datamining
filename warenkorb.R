@@ -183,9 +183,38 @@ rulesUntreu = subset(rules.3, rhs %in% "treue=2")
 inspect(head(rulesUntreu))
 inspect(sort(rulesUntreu, by="lift")[1:10])
 
+## Marke, Treue
+#top treue by lift
+test = as(coffeeTable[,c(4,12)],"transactions")
+rules.test = apriori(test, parameter = list(supp=0.01, conf=0.1, target="rules", minlen=2))
+inspect(head(rules.test))
+inspect(head(sort(rules.test, by="lift")))
+inspect(head(sort(subset(rules.test, rhs %in% "treue=1"), by="lift")))
 
+#top untreue by lift
+inspect(head(sort(subset(rules.test, rhs %in% "treue=2"), by="lift")))
 
+## Menge, Preis, Marke, Preisbewusstsein, Treue
+#top treue by lift
+test = as(coffeeTable[,c(1,2,4,10,12)],"transactions")
+rules.test = apriori(test, parameter = list(supp=0.1, conf=0.1, target="rules", minlen=3))
+inspect(head(rules.test))
+inspect(head(sort(rules.test, by="lift")))
+inspect(head(sort(subset(rules.test, rhs %in% "treue=1"), by="lift")))
 
+#top untreue by lift
+inspect(head(sort(subset(rules.test, rhs %in% "treue=2"), by="lift")))
+
+## Alter, Klasse, Einkommen, Treue
+#top treue by lift
+test = as(coffeeTable[,c(6,7,8,12)],"transactions")
+rules.test = apriori(test, parameter = list(supp=0.01, conf=0.1, target="rules", minlen=3))
+inspect(head(rules.test))
+inspect(head(sort(rules.test, by="lift")))
+inspect(head(sort(subset(rules.test, rhs %in% "treue=1"), by="lift")))
+
+#top untreue by lift
+inspect(head(sort(subset(rules.test, rhs %in% "treue=2"), by="lift")))
 
 #### falls fehler "Fehler in length(x) : Method length not implemented for class rules"
 # in konsole folgende befehle ausführen
