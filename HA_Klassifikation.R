@@ -59,81 +59,101 @@ calcPerformance = function(data){
 }
 
 
-# testdaten festlegen  ####
-
-# attribute ausklammern
-selectedData = coffeeTable.stand
-selectedData$nummer = NULL
-
-# nur diese attribute beachten
-selectedData = selectedData[,c(2,8,10,12)]
-
-
-
-train = selectedData[1:65493,]
-test = selectedData[65493:130986,]
-
-
-
-
-
-# m5p ####
-
+library(C50)
 library(RWeka)
 
-model.m5p = M5P(treue ~., data=train)
-prediction.m5p = predict(model.m5p, test,type="class")
-
-#transformieren zu treu / untreu
-prediction.m5p[which(prediction.m5p <= 0.5)] = 0
-prediction.m5p[which(prediction.m5p > 0.5)] = 0
-
-confusion.matrix.m5p = table(prediction.m5p,test$treue)
-colnames(confusion.matrix.m5p) = paste("true", rownames(confusion.matrix.m5p), sep=":")
-rownames(confusion.matrix.m5p) = paste("pred", colnames(confusion.matrix.m5p), sep=":")
-
-kennzahlen.m5p = calcPerformance(confusion.matrix.m5p)
 
 
-# c4.5 ####
-model.c45 = LMT(treue ~., data=train)
-prediction.c45 = predict(model.c45, test,type="class")
+# m5p #
 
-confusion.matrix.c45 = table(prediction.c45,test$treue)
-colnames(confusion.matrix.c45) = paste("true", rownames(confusion.matrix.c45), sep=":")
-rownames(confusion.matrix.c45) = paste("pred", colnames(confusion.matrix.c45), sep=":")
+##  Fehler in .jcall(o, "Ljava/lang/Class;", "getClass") : 
+## weka.core.UnsupportedAttributeTypeException: weka.classifiers.trees.M5P: Cannot handle binary class
+## bisher keine lösung gefunden
+runM5P = function(train_, test_){
 
-kennzahlen.c45 = calcPerformance(confusion.matrix.c45)
+  model.m5p = M5P(treue ~., data=train_)
+  prediction.m5p = predict(model.m5p, test_,type="class")
+  
+  #transformieren zu treu / untreu
+  prediction.m5p[which(prediction.m5p <= 0.5)] = 0
+  prediction.m5p[which(prediction.m5p > 0.5)] = 0
+  
+  confusion.matrix.m5p = table(prediction.m5p,test_$treue)
+  colnames(confusion.matrix.m5p) = paste("true", rownames(confusion.matrix.m5p), sep=":")
+  rownames(confusion.matrix.m5p) = paste("pred", colnames(confusion.matrix.m5p), sep=":")
+  
+  return(calcPerformance(confusion.matrix.m5p))
+}
 
-# c5.0 ####
-library(C50)
+# c4.5 #
+runC45 = function(train_, test_)
+{
+  model.c45 = LMT(treue ~., data=train_)
+  prediction.c45 = predict(model.c45, test_,type="class")
+  
+  confusion.matrix.c45 = table(prediction.c45,test_$treue)
+  colnames(confusion.matrix.c45) = paste("true", rownames(confusion.matrix.c45), sep=":")
+  rownames(confusion.matrix.c45) = paste("pred", colnames(confusion.matrix.c45), sep=":")
+  
+  return(calcPerformance(confusion.matrix.c45))
+}
+# c5.0 #
 
-trainF = train
-trainF$treue = as.factor(train$treue)
-testF = test
-testF$treue = as.factor(test$treue)
+runC50 = function(train_, test_)
+{
 
-model.c50 = C5.0(treue ~., data=trainF)
-prediction.c50 = predict(model.c50, testF, type="class")
+  model.c50 = C5.0(treue ~., data=train_)
+  prediction.c50 = predict(model.c50, test_, type="class")
+  
+  confusion.matrix.c50 = table(prediction.c50,test_$treue)
+  colnames(confusion.matrix.c50) = paste("true", rownames(confusion.matrix.c50), sep=":")
+  rownames(confusion.matrix.c50) = paste("pred", colnames(confusion.matrix.c50), sep=":")
+  
+  return(calcPerformance(confusion.matrix.c50))
 
-confusion.matrix.c50 = table(prediction.c50,testF$treue)
-colnames(confusion.matrix.c50) = paste("true", rownames(confusion.matrix.c50), sep=":")
-rownames(confusion.matrix.c50) = paste("pred", colnames(confusion.matrix.c50), sep=":")
+}
 
-kennzahlen.c50 = calcPerformance(confusion.matrix.c50)
+# J48 #
 
-# J48 ####
-model.j48 = J48(treue ~., data=train)
-prediction.j48 = predict(model.j48, test,type="class")
-confusion.matrix.j48 = table(prediction.j48,test$treue)
-colnames(confusion.matrix.j48) = paste("true", rownames(confusion.matrix.j48), sep=":")
-rownames(confusion.matrix.j48) = paste("pred", colnames(confusion.matrix.j48), sep=":")
+runJ48 = function(train_, test_)
+{
+  model.j48 = J48(treue ~., data=train_)
+  prediction.j48 = predict(model.j48, test_,type="class")
+  confusion.matrix.j48 = table(prediction.j48,test_$treue)
+  colnames(confusion.matrix.j48) = paste("true", rownames(confusion.matrix.j48), sep=":")
+  rownames(confusion.matrix.j48) = paste("pred", colnames(confusion.matrix.j48), sep=":")
 
-kennzahlen.j48 = calcPerformance(confusion.matrix.j48)
+  return (calcPerformance(confusion.matrix.j48))
+}
+
+prepData = function ( data){
+  retData = data
+  
+  set.seed(1337)
+  nr = dim(data)[1]
+  retData = data[sample.int(nr),]
+  trainRet = retData[1:65493,]
+  testRet = retData[65493:130986,]
+  
+  return ( list("train" = trainRet, "test" = testRet))
+  
+}
+
+# testdaten festlegen  ####
+selectedData = coffeeTable.stand
+
+# attribute ausklammern
+#selectedData$nummer = NULL
+
+# nur diese attribute beachten
+#selectedData = selectedData[,c(2,8,10,12)]
+selectedData = selectedData[,c(4,12)]
+
 
 ## vergleich der modelle anhand unserer ausgewählten attribute ####
+workData = prepData(selectedData)
 
-kennzahlen.m5p
-kennzahlen.c45
-kennzahlen.c50
-kennzahlen.j48
+runC45(workData$train, workData$test)
+runC50(workData$train, workData$test)
+runJ48(workData$train, workData$test)
+
