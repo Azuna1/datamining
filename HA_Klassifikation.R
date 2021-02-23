@@ -147,13 +147,19 @@ selectedData = coffeeTable.stand
 
 # nur diese attribute beachten
 #selectedData = selectedData[,c(2,8,10,12)]
-selectedData = selectedData[,c(4,12)]
 
 
 ## vergleich der modelle anhand unserer ausgewählten attribute ####
+selectedData = selectedData[,c(4,12)] # Treue anhand der Marke
 workData = prepData(selectedData)
 
 runC45(workData$train, workData$test)
 runC50(workData$train, workData$test)
 runJ48(workData$train, workData$test)
 
+selectedData = selectedData[,c(2,8,10,12)] #treue anhandvon preis, einkommen, preisbewusstsein
+workData = prepData(selectedData)
+
+runC45(workData$train, workData$test)
+runC50(workData$train, workData$test)
+runJ48(workData$train, workData$test)
