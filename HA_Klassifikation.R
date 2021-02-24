@@ -66,36 +66,49 @@ library(RWeka)
 
 # m5p #
 
-##  Fehler in .jcall(o, "Ljava/lang/Class;", "getClass") : 
-## weka.core.UnsupportedAttributeTypeException: weka.classifiers.trees.M5P: Cannot handle binary class
-## bisher keine lösung gefunden
+# funktioniert nicht mit kategorialen werten, daher dummyvar encoding
 runM5P = function(train_, test_){
-
+  train_ <- model.matrix( 
+    ~ . , 
+    data = train_
+  )
+  train_ = as.data.frame(train_)
+  train_[1] = NULL
+  colnames(train_)[9] = "treue"
+  
+  
+  test_ <- model.matrix( 
+    ~ . , 
+    data = train_
+  )
+  
+  
+  test_ = as.data.frame(test_)
+  test_[1] = NULL
+  colnames(test_)[9] = "treue"
+  
   model.m5p = M5P(treue ~., data=train_)
-  prediction.m5p = predict(model.m5p, test_,type="class")
+  prediction.m5p = predict(model.m5p, test_, type="class")
   
   #transformieren zu treu / untreu
-  prediction.m5p[which(prediction.m5p <= 0.5)] = 0
-  prediction.m5p[which(prediction.m5p > 0.5)] = 0
+  prediction.m5p[which(prediction.m5p > 0.5)] = 2
+  prediction.m5p[which(prediction.m5p <= 0.5)] = 1
   
   confusion.matrix.m5p = table(prediction.m5p,test_$treue)
-  colnames(confusion.matrix.m5p) = paste("true", rownames(confusion.matrix.m5p), sep=":")
-  rownames(confusion.matrix.m5p) = paste("pred", colnames(confusion.matrix.m5p), sep=":")
-  
-  return(calcPerformance(confusion.matrix.m5p))
+  return(confusion.matrix.m5p)
 }
 
 # c4.5 #
 runC45 = function(train_, test_)
 {
   model.c45 = LMT(treue ~., data=train_)
-  prediction.c45 = predict(model.c45, test_,type="class")
+  prediction.c45 = predict(model.c45, test_, type="class")
   
   confusion.matrix.c45 = table(prediction.c45,test_$treue)
   colnames(confusion.matrix.c45) = paste("true", rownames(confusion.matrix.c45), sep=":")
   rownames(confusion.matrix.c45) = paste("pred", colnames(confusion.matrix.c45), sep=":")
   
-  return(calcPerformance(confusion.matrix.c45))
+  return(list("model" = model.c45, "pred" = prediction.c45,"confusion" = confusion.matrix.c45, "kennzahlen" = calcPerformance(confusion.matrix.c45)))
 }
 # c5.0 #
 
@@ -109,7 +122,8 @@ runC50 = function(train_, test_)
   colnames(confusion.matrix.c50) = paste("true", rownames(confusion.matrix.c50), sep=":")
   rownames(confusion.matrix.c50) = paste("pred", colnames(confusion.matrix.c50), sep=":")
   
-  return(calcPerformance(confusion.matrix.c50))
+  return(list("model" = model.c50, "pred" = prediction.c50,"confusion" = confusion.matrix.c50, "kennzahlen" = calcPerformance(confusion.matrix.c50)))
+  
 
 }
 
@@ -139,8 +153,10 @@ prepData = function ( data){
   
 }
 
+
+
 # testdaten festlegen  ####
-selectedData = coffeeTable.stand
+
 
 # attribute ausklammern
 #selectedData$nummer = NULL
@@ -150,6 +166,7 @@ selectedData = coffeeTable.stand
 
 
 ## vergleich der modelle anhand unserer ausgewählten attribute ####
+selectedData = coffeeTable.stand
 selectedData = selectedData[,c(4,12)] # Treue anhand der Marke
 workData = prepData(selectedData)
 
@@ -157,9 +174,20 @@ runC45(workData$train, workData$test)
 runC50(workData$train, workData$test)
 runJ48(workData$train, workData$test)
 
-selectedData = selectedData[,c(2,8,10,12)] #treue anhandvon preis, einkommen, preisbewusstsein
+selectedData = coffeeTable.stand
+selectedData = selectedData[,c(2,8,10,12)] #treue anhand von preis, einkommen, preisbewusstsein
 workData = prepData(selectedData)
 
-runC45(workData$train, workData$test)
-runC50(workData$train, workData$test)
+a = runC45(workData$train, workData$test)
+a = runC50(workData$train, workData$test)
 runJ48(workData$train, workData$test)
+
+a$model
+a$pred
+a$confusion
+
+plot(a$model)
+
+summary(coffeeTable)
+
+

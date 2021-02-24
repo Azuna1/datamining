@@ -114,7 +114,7 @@ plot(knn_treue)
 
 nn = neuralnet((treue == 2) ~ . , modelData, hidden = c(hl1,hl2), threshold = 0.15, lifesign = "full", linear.output = FALSE)
 plot(nn)
-saveRDS(nn, "nn.net")
+saveRDS(nn, "nn_logistic.net")
 nn_tanh = neuralnet((treue == 2) ~ . , modelData, hidden = c(hl1,hl2), act.fct = "tanh", threshold = 0.15, lifesign = "full", linear.output = FALSE)
 saveRDS(nn_tanh, "nn_tanh.net")
 
@@ -171,8 +171,8 @@ kennzahlen = calcPerformance(conf_matrix)
 ### Automatisierung von Parameteroptimierung
 
 act.func = c("tanh","logistic")
-hl1 = c(30,20,10)
-hl2 = c(10,5,2)
+hl1 = c(20,15,10)
+hl2 = c(8,4,2)
 
 ## verschiedene NN trainieren
 for(act_func in act.func){
@@ -186,7 +186,7 @@ for(act_func in act.func){
                          lifesign = "full",
                          algorithm = "rprop+",
                          threshold = 0.15,
-                         stepmax = 100000,
+                         stepmax = 50000,
                          linear.output = FALSE)
       
       # speichern damit wir das nicht 100x machen müssen
