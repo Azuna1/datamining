@@ -185,9 +185,7 @@ runJ48(workData$train, workData$test)
 a$model
 a$pred
 a$confusion
-
 plot(a$model)
 
-summary(coffeeTable)
-
+# enorm schlechte TPR und FPR sowie nur eine acc von ~55% bei allen verfahren
 
