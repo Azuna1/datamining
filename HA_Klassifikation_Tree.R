@@ -18,7 +18,7 @@ coffeeTable$einkm = as.factor(coffeeTable$einkm)
 coffeeTable$prbew = as.factor(coffeeTable$prbew)
 coffeeTable$bildg = as.factor(coffeeTable$bildg)
 
-# binäre form
+# binäre form / boolean interpretation
 coffeeTable$treue[which(coffeeTable$treue == 2)] = 0
 coffeeTable$treue = as.factor(coffeeTable$treue)
 
@@ -26,7 +26,7 @@ coffeeTable$treue = as.factor(coffeeTable$treue)
 # daten standardisieren (nur numerische)
 coffeeTable.stand = coffeeTable
 
-## macht die haushalts nummer überhaupt sinn?
+## macht die haushaltsnummer überhaupt sinn?
 coffeeTable.stand$nummer = (coffeeTable$nummer - mean(coffeeTable$nummer)) / sd(coffeeTable$nummer)
 
 coffeeTable.stand$dauer = (coffeeTable$dauer - mean(coffeeTable$dauer)) / sd(coffeeTable$dauer)
@@ -58,6 +58,8 @@ rfit = rpart(treue ~., data = workData$train, method = "class", cp=0.00001)
 printcp(rfit)
 # geringste xerror wert = 0.81960 -> viel zu hoch
 
+#fancyRpartPlot(rfit, caption=NULL) # Zu komplexe Trees für RStudio plot
+
 prediction = predict(rfit, workData$test, type="class")
 confusion = table(prediction, workData$test$treue)
 colnames(confusion) = paste("true", rownames(confusion), sep=":")
@@ -79,6 +81,8 @@ rfit = rpart(treue ~., data = workData$train, method = "class", cp=0.00001)
 printcp(rfit)
 # geringste xerror wert = 0.86159 -> viel zu hoch, sogar noch höher!
 
+#fancyRpartPlot(rfit, caption=NULL) # Zu komplexe Trees für RStudio plot
+
 prediction = predict(rfit, workData$test, type="class")
 confusion = table(prediction, workData$test$treue)
 colnames(confusion) = paste("true", rownames(confusion), sep=":")
@@ -98,6 +102,8 @@ workData = prepData(selectedData)
 rfit = rpart(treue ~., data = workData$train, method = "class", cp=0.00001)
 printcp(rfit)
 # geringste xerror wert = 0.94835 -> viel zu hoch, sogar noch höher!
+
+fancyRpartPlot(rfit, caption=NULL)
 
 prediction = predict(rfit, workData$test, type="class")
 confusion = table(prediction, workData$test$treue)
@@ -121,6 +127,8 @@ rfit = rpart(treue ~., data = workData$train, method = "class", minsplit = 2, mi
 printcp(rfit)
 # geringste xerror wert = 0.99896 -> viel zu hoch, sogar noch höher!
 
+fancyRpartPlot(rfit, caption=NULL)
+
 prediction = predict(rfit, workData$test, type="class")
 confusion = table(prediction, workData$test$treue)
 colnames(confusion) = paste("true", rownames(confusion), sep=":")
@@ -142,7 +150,7 @@ rfit = rpart(treue ~., data = workData$train, method = "class", minsplit = 2, mi
 printcp(rfit)
 # geringste xerror wert = 0.99900 -> viel zu hoch
 
-# fancyRpartPlot(rfit, caption=NULL) # Zu komplexe Trees für RStudio plot
+fancyRpartPlot(rfit, caption=NULL) # Zu komplexe Trees für RStudio plot
 # summary(rfit)
 
 prediction = predict(rfit, workData$test, type="class")
