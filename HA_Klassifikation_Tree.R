@@ -27,7 +27,8 @@ coffeeTable$treue = as.factor(coffeeTable$treue)
 coffeeTable.stand = coffeeTable
 
 ## macht die haushaltsnummer überhaupt sinn?
-coffeeTable.stand$nummer = (coffeeTable$nummer - mean(coffeeTable$nummer)) / sd(coffeeTable$nummer)
+# coffeeTable.stand$nummer = (coffeeTable$nummer - mean(coffeeTable$nummer)) / sd(coffeeTable$nummer)
+# nein macht es nicht
 
 coffeeTable.stand$dauer = (coffeeTable$dauer - mean(coffeeTable$dauer)) / sd(coffeeTable$dauer)
 coffeeTable.stand$persn = (coffeeTable$persn - mean(coffeeTable$persn)) / sd(coffeeTable$persn)
@@ -53,6 +54,7 @@ library(RColorBrewer)
 
 # Gesamten Datensatz analysieren
 selectedData = coffeeTable.stand
+
 workData = prepData(selectedData)
 rfit = rpart(treue ~., data = workData$train, method = "class", cp=0.00001)
 printcp(rfit)

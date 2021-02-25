@@ -44,11 +44,17 @@ colnames(oh_data)[32] = "treue"
 
 # Fehler: kann Vektor der Größe 63.9 GB nicht allozieren
 gower.dist = daisy(coffeeTable.stand, metric ="gower")
+
 # Fehler: kann Vektor der Größe 63.9 GB nicht allozieren
 gower.dist = daisy(oh_data, metric ="gower")
 
+# Fehler: kann Vektor der Größe 26.8 GB nicht allozieren
+gower.dist = daisy(oh_data[1:60000,c(1,2,4,7,8,10,11,12)], metric ="gower")
+
+
+
 ### anderer anlauf
-kpres = kproto(x = coffeeTable.stand, k = 10)
+kpres = kproto(x = coffeeTable.stand, k = 8)
 summary(kpres)
 
 clprofiles(kpres, coffeeTable.stand)
@@ -75,6 +81,22 @@ fviz_screenplot(mca, addlabels = TRUE, ylim = c(0,50))
 
 
 ### hierarchisch ####
+# 1  menge
+# 2  preis
+# 3  nummer
+# 4  marke
+# 5  dauer
+# 6  alter
+# 7  klasse
+# 8  einkm
+# 9  persn
+# 10 prbew
+# 11 bildg
+# 12 treue
 
-nomres = nomclust(coffeeTable.stand, prox = TRUE, opt = TRUE)
+#Fehler: kann Vektor der Größe 127.8 GB nicht allozieren
+nomres = nomclust(coffeeTable.stand, prox = TRUE)
+
+#nach 3 std abgebrochen
+nomres = nomclust(coffeeTable.stand[1:60000,c(1,2,4,7,8,10,11,12)], prox = TRUE)
 plot(nomres$dend)
