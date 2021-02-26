@@ -100,3 +100,7 @@ nomres = nomclust(coffeeTable.stand, prox = TRUE)
 #nach 3 std abgebrochen
 nomres = nomclust(coffeeTable.stand[1:60000,c(1,2,4,7,8,10,11,12)], prox = TRUE)
 plot(nomres$dend)
+
+#nach 2 std abgebrochen
+nomres = nomclust(coffeeTable.stand[1:60000,c(1,2,4,7,8,10,11,12)], measure = "lin", method ="average", clu.high = 8, opt = TRUE)
+plot(nomres$dend)
