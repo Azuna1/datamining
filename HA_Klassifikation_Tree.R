@@ -34,7 +34,7 @@ coffeeTable.stand$dauer = (coffeeTable$dauer - mean(coffeeTable$dauer)) / sd(cof
 coffeeTable.stand$persn = (coffeeTable$persn - mean(coffeeTable$persn)) / sd(coffeeTable$persn)
 
 
-require(rpart)
+library(rpart)
 library(rattle)
 library(rpart.plot)
 library(RColorBrewer)
@@ -152,7 +152,7 @@ rfit = rpart(treue ~., data = workData$train, method = "class", minsplit = 2, mi
 printcp(rfit)
 # geringste xerror wert = 0.99900 -> viel zu hoch
 
-fancyRpartPlot(rfit, caption=NULL) # Zu komplexe Trees für RStudio plot
+#fancyRpartPlot(rfit, caption=NULL) # Zu komplexe Trees für RStudio plot
 # summary(rfit)
 
 prediction = predict(rfit, workData$test, type="class")

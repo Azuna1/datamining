@@ -54,10 +54,7 @@ gower.dist = daisy(oh_data[1:60000,c(1,2,4,7,8,10,11,12)], metric ="gower")
 
 
 ### anderer anlauf
-kpres = kproto(x = coffeeTable.stand, k = 8)
-summary(kpres)
 
-clprofiles(kpres, coffeeTable.stand)
 
 Es = numeric(10)
 for(i in 1:10){
@@ -67,6 +64,11 @@ for(i in 1:10){
 
 plot(1:10, Es, type = "b", ylab = "Objective Function", xlab = "# Clusters",
      main = "Scree Plot") 
+
+kpres = kproto(x = coffeeTable.stand, k = 8)
+summary(kpres)
+
+clprofiles(kpres, coffeeTable.stand)
 
 
 ### MCA zur reduzierung auf die wichtigsten features
